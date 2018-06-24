@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoppingCart.Api.Client.Interfaces;
 using ShoppingCart.Api.Infrastructure.EF.Context;
+using ShoppingCart.Api.Infrastructure.EventFeed.Interfaces;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace ShoppingCart.Api.Controllers
 {
@@ -16,14 +14,17 @@ namespace ShoppingCart.Api.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly CartContext  _cartContext;
+        private readonly IEventStore _eventStore;
         private readonly IProductCatalogueClient _productCatalogueClient;
 
         public ShoppingCartController(
             CartContext cartContext
-            ,IProductCatalogueClient productCatalogueClient
+            , IEventStore eventStore
+            , IProductCatalogueClient productCatalogueClient
             )
         {
             _cartContext = cartContext;
+            _eventStore = eventStore;
             _productCatalogueClient = productCatalogueClient;
         }
 
@@ -40,7 +41,6 @@ namespace ShoppingCart.Api.Controllers
             var shoppingCart = await _cartContext.ShoppingCarts
                 .Include(b => b.Items)
                 .SingleOrDefaultAsync(ci => ci.UserId == userId);
-
 
             if (shoppingCart != null)
             {
@@ -72,9 +72,14 @@ namespace ShoppingCart.Api.Controllers
                     UserId = userId
                 };
 
-                var result =  _cartContext.ShoppingCarts.Add(shoppingCart);
+                _cartContext.ShoppingCarts.Add(shoppingCart);
 
-                await _cartContext.SaveChangesAsync();
+                var createCartResult = await _cartContext.SaveChangesAsync();
+
+                if (createCartResult > 0)
+                {
+                    _eventStore.Raise("Создана корзина", shoppingCart);
+                }
             }
 
             var shoppingCartItems = await _productCatalogueClient.GetShoppingCartItems(productIds).ConfigureAwait(false);
@@ -95,7 +100,12 @@ namespace ShoppingCart.Api.Controllers
                 }
             }
 
-            await _cartContext.SaveChangesAsync();
+             var addItemResult = await _cartContext.SaveChangesAsync();
+
+            if (addItemResult > 0)
+            {
+                _eventStore.Raise("Добавлен товар", shoppingCart);
+            }
 
             return Ok(shoppingCart);
         }
@@ -122,7 +132,12 @@ namespace ShoppingCart.Api.Controllers
                 _cartContext.Remove(item);
             }
 
-            await _cartContext.SaveChangesAsync();
+            var deleteItemResult = await _cartContext.SaveChangesAsync();
+
+            if (deleteItemResult > 0)
+            {
+                _eventStore.Raise("Удалён товар", shoppingCart);
+            }
 
             return Ok(shoppingCart);
         }

@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using ShoppingCart.Api.Client;
 using ShoppingCart.Api.Client.Interfaces;
 using ShoppingCart.Api.Infrastructure.EF.Context;
+using ShoppingCart.Api.Infrastructure.EventFeed;
+using ShoppingCart.Api.Infrastructure.EventFeed.Interfaces;
 using System;
 using System.Reflection;
 
@@ -66,7 +68,8 @@ namespace ShoppingCart.Api
                 });
             });
 
-           services.AddTransient<IProductCatalogueClient, ProductCatalogueClient>();
+            services.AddTransient<IProductCatalogueClient, ProductCatalogueClient>();
+            services.AddTransient<IEventStore, EventStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
