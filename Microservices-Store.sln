@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{7815700F-556A-4FA1-BAB6-957069AE5F3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingCart.Api", "ShoppingCart.Api\ShoppingCart.Api.csproj", "{3DA70599-876E-4586-B84D-D5D5A59748BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCart.Api", "ShoppingCart.Api\ShoppingCart.Api.csproj", "{3DA70599-876E-4586-B84D-D5D5A59748BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mock.Api", "Mock.Api\Mock.Api.csproj", "{0FAE940F-50FF-4951-B7E4-56985895AA42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +19,17 @@ Global
 		{3DA70599-876E-4586-B84D-D5D5A59748BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DA70599-876E-4586-B84D-D5D5A59748BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DA70599-876E-4586-B84D-D5D5A59748BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FAE940F-50FF-4951-B7E4-56985895AA42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FAE940F-50FF-4951-B7E4-56985895AA42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FAE940F-50FF-4951-B7E4-56985895AA42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FAE940F-50FF-4951-B7E4-56985895AA42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3DA70599-876E-4586-B84D-D5D5A59748BC} = {7815700F-556A-4FA1-BAB6-957069AE5F3D}
+		{0FAE940F-50FF-4951-B7E4-56985895AA42} = {7815700F-556A-4FA1-BAB6-957069AE5F3D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38F39F4F-21D8-4001-B61D-768350AB09D3}

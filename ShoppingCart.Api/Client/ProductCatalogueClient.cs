@@ -18,7 +18,7 @@ namespace ShoppingCart.Api.Client
             .WaitAndRetryAsync(3, attempt => TimeSpan.FromMilliseconds(100 * Math.Pow(2, attempt)), (ex, _) => Console.WriteLine(ex.ToString()));
 
         private static string productCatalogueBaseUrl =
-          @"http://private-05cc8-chapter2productcataloguemicroservice.apiary-mock.com";
+          @"http://localhost:50000/";
 
         private static string getProductPathTemplate ="/products?productIds=[{0}]";
 
