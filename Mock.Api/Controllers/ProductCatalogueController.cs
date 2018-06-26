@@ -77,7 +77,30 @@ namespace Mock.Api.Controllers
         }
 
         [HttpPost]
-        [Route("/products/")]
+        [Route("/products/search")]
+        public async Task<IActionResult> PostSearch([FromBody]int[] ProductIds)
+        {
+            if (ProductIds.Count() == 0)
+            {
+                return BadRequest();
+            }
+
+            var searchResult = new List<Product>();
+            foreach (var item in ProductIds)
+            {
+                var product = _products.SingleOrDefault(p => p.ProductId == item);
+                searchResult.Add(product);
+            }
+            if (searchResult != null)
+            {
+                return Ok(searchResult);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        [Route("/products/add")]
         public async Task<IActionResult> AddItem(Product product)
         {
             if (product != null)

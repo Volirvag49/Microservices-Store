@@ -41,12 +41,34 @@ namespace MockHTTPClient.Api.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("/products/search")]
+        public async Task<IActionResult> PostSearch(int[] ProductIds)
+        {
+            var productResource = $"/products/search/";
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = new Uri($"http://{this.hostName}");
+                var response = await httpClient.PostAsync(productResource, new StringContent(JsonConvert.SerializeObject(ProductIds), Encoding.UTF8, "application/json"));
+                ThrowOnTransientFailure(response);
+
+                var result = JsonConvert.DeserializeObject<IEnumerable<Product>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+
+                return NotFound();
+            }
+        }
+
         //http://localhost:50000/products?
         [HttpPost]
-        [Route("/products/")]
+        [Route("/products/add")]
         public async Task<IActionResult> AddItem(Product product)
         {
-            var productResource = $"/products/";
+            var productResource = $"/products/add/";
             using (var httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri($"http://{this.hostName}");
