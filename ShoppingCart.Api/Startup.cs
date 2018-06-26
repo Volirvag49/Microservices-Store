@@ -61,9 +61,9 @@ namespace ShoppingCart.Api
                 options.DescribeAllEnumsAsStrings();
                 options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
-                    Title = "Catalog HTTP API",
+                    Title = "ShoppingCart.Api",
                     Version = "v1",
-                    Description = "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
+                    Description = "ShoppingCart.Api",
                     TermsOfService = "Terms Of Service"
                 });
             });
@@ -86,7 +86,7 @@ namespace ShoppingCart.Api
             app.UseSwagger()
             .UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog-Api V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShoppingCart.Api V1");
             });
         }
     }
