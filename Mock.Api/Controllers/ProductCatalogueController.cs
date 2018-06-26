@@ -75,5 +75,19 @@ namespace Mock.Api.Controllers
 
             return NotFound();
         }
+
+        [HttpPost]
+        [Route("/products/")]
+        public async Task<IActionResult> AddItem(Product product)
+        {
+            if (product != null)
+            {
+                _products.Add(product);
+
+                return Ok(_products.ToList());
+            }
+
+            return NotFound();
+        }
     }
 }

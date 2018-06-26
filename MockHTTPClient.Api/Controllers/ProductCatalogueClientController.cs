@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MockHTTPClient.Api.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace MockHTTPClient.Api.Controllers
 {
@@ -20,11 +22,11 @@ namespace MockHTTPClient.Api.Controllers
         [Route("/products/{productId}")]
         public async Task<IActionResult> GetById(int productId)
         {
-            var userResource = $"/products/{productId}";
+            var productResource = $"/products/{productId}";
             using (var httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri($"http://{this.hostName}");
-                var response = await httpClient.GetAsync(userResource);
+                var response = await httpClient.GetAsync(productResource);
                 ThrowOnTransientFailure(response);
 
                 var product = JsonConvert.DeserializeObject<Product>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
@@ -36,6 +38,29 @@ namespace MockHTTPClient.Api.Controllers
 
                 return NotFound();
 
+            }
+        }
+
+        //http://localhost:50000/products?
+        [HttpPost]
+        [Route("/products/")]
+        public async Task<IActionResult> AddItem(Product product)
+        {
+            var productResource = $"/products/";
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = new Uri($"http://{this.hostName}");
+                var response = await httpClient.PostAsync(productResource, new StringContent(JsonConvert.SerializeObject(product), Encoding.UTF8, "application/json"));
+                ThrowOnTransientFailure(response);
+
+                var result = JsonConvert.DeserializeObject<IEnumerable<Product>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+
+                if (result != null)
+                {
+                    return Ok(product);
+                }
+
+                return NotFound();
             }
         }
 
