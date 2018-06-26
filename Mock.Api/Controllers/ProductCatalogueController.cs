@@ -10,7 +10,7 @@ using Mock.Api.Models;
 namespace Mock.Api.Controllers
 {
     [Produces("application/json")]
-    [Route("api/ProductCatalogue")]
+    [Route("api/v1/ProductCatalogue")]
     public class ProductCatalogueController : Controller
     {
         private List<Product> _products;
@@ -30,7 +30,7 @@ namespace Mock.Api.Controllers
         [HttpGet]
         [Route("/products")]
         [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAll()
         {
             if (_products != null)
             {
@@ -41,9 +41,21 @@ namespace Mock.Api.Controllers
         }
 
         [HttpGet]
+        [Route("/products/{productId}")]
+        public async Task<IActionResult> GetById(int productId)
+        {
+            if (productId != 0)
+            {
+                return Ok(_products.SingleOrDefault(p => p.ProductId == productId));
+            }
+
+            return NotFound();
+        }
+
+        [HttpGet]
         [Route("/products2")]
         [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> SearchProducts([FromQuery]int[] ProductIds)
+        public async Task<IActionResult> Search([FromQuery]int[] ProductIds)
         {
             if (ProductIds.Count() == 0)
             {
