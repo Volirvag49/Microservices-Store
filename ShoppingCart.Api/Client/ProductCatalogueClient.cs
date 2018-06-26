@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ShoppingCart.Api.Client
@@ -20,7 +21,6 @@ namespace ShoppingCart.Api.Client
         private static string productCatalogueBaseUrl =
           @"http://localhost:50000/";
 
-        private static string getProductPathTemplate ="/products?productIds=[{0}]";
 
         public Task<IEnumerable<ShoppingCartItem>> GetShoppingCartItems(int[] productCatalogueIds) =>
           exponentialRetryPolicy
@@ -36,12 +36,12 @@ namespace ShoppingCart.Api.Client
 
         private static async Task<HttpResponseMessage> RequestProductFromProductCatalogue(int[] productCatalogueIds)
         {
-            var productsResource = string.Format(
-              getProductPathTemplate, string.Join(",", productCatalogueIds));
+            var productsResource = "/products/search/";
+
             using (var httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri(productCatalogueBaseUrl);
-                return await httpClient.GetAsync(productsResource).ConfigureAwait(false);
+                return await httpClient.PostAsync(productsResource, new StringContent(JsonConvert.SerializeObject(productCatalogueIds), Encoding.UTF8, "application/json"));
             }
         }
 
