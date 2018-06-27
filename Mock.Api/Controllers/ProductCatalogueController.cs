@@ -13,19 +13,14 @@ namespace Mock.Api.Controllers
     [Route("api/v1/ProductCatalogue")]
     public class ProductCatalogueController : Controller
     {
-        private List<Product> _products;
-
-        public ProductCatalogueController()
+        private static List<Product> _products = new List<Product>
         {
-            _products = new List<Product>()
-            {
                 new Product(){ProductId = 1 , ProductName = "Продукт 1", ProductDescription = "Описание 1", Price = 10},
                 new Product(){ProductId = 2 , ProductName = "Продукт 2", ProductDescription = "Описание 2", Price = 20},
                 new Product(){ProductId = 3 , ProductName = "Продукт 3", ProductDescription = "Описание 3", Price = 30},
                 new Product(){ProductId = 4 , ProductName = "Продукт 4", ProductDescription = "Описание 4", Price = 40},
                 new Product(){ProductId = 5 , ProductName = "Продукт 5", ProductDescription = "Описание 5", Price = 50}
-            };
-        }
+        };
 
         [HttpGet]
         [Route("/products")]
@@ -34,7 +29,7 @@ namespace Mock.Api.Controllers
         {
             if (_products != null)
             {
-                return Ok(_products);
+                return Ok(_products.OrderBy(p => p.ProductId));
             }
 
             return NotFound();
@@ -70,7 +65,7 @@ namespace Mock.Api.Controllers
             }
             if (searchResult != null)
             {
-                return Ok(searchResult);
+                return Ok(searchResult.OrderBy(p => p.ProductId));
             }
 
             return NotFound();
@@ -93,7 +88,7 @@ namespace Mock.Api.Controllers
             }
             if (searchResult != null)
             {
-                return Ok(searchResult);
+                return Ok(searchResult.OrderBy(p => p.ProductId));
             }
 
             return NotFound();
@@ -107,7 +102,50 @@ namespace Mock.Api.Controllers
             {
                 _products.Add(product);
 
-                return Ok(_products.ToList());
+                return Ok(_products.OrderBy(p => p.ProductId).ToList());
+            }
+
+            return NotFound();
+        }
+
+        [HttpPut]
+        [Route("/products/update")]
+        public async Task<IActionResult> UpdateItem([FromBody] Product product)
+        {
+            if (product != null)
+            {
+               var updatedProduct = _products.SingleOrDefault(p => p.ProductId == product.ProductId);
+                if (updatedProduct != null)
+                {
+                    updatedProduct.ProductName = product.ProductName;
+                    updatedProduct.ProductDescription = product.ProductDescription;
+                    updatedProduct.Price = product.Price;
+                }
+
+                else return NotFound();
+               
+                return Ok(product);
+            }
+
+            return NotFound();
+        }
+
+        [HttpDelete]
+        [Route("/products/delete")]
+        public async Task<IActionResult> DeleteItem(int? productId)
+        {
+            if (productId != null)
+            {
+                var deleteddProduct = _products.SingleOrDefault(p => p.ProductId == productId);
+                if (deleteddProduct != null)
+                {
+                    _products.Remove(deleteddProduct);
+
+                }
+
+                else return NotFound();
+
+                return Ok(_products.OrderBy(p => p.ProductId).ToList());
             }
 
             return NotFound();
