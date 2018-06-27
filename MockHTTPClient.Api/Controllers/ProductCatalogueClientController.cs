@@ -63,7 +63,6 @@ namespace MockHTTPClient.Api.Controllers
             }
         }
 
-        //http://localhost:50000/products?
         [HttpPost]
         [Route("/products/add")]
         public async Task<IActionResult> AddItem(Product product)
@@ -112,7 +111,7 @@ namespace MockHTTPClient.Api.Controllers
                 return NotFound();
             }
         }
-        ///products/delete/{productId}
+
         [HttpDelete]
         [Route("/products/delete")]
         public async Task<IActionResult> DeleteItem(int? productId)
