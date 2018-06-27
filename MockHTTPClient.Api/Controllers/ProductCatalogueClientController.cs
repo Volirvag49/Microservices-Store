@@ -91,5 +91,50 @@ namespace MockHTTPClient.Api.Controllers
             if (((int)response.StatusCode) < 200 || ((int)response.StatusCode) > 499) throw new Exception(response.StatusCode.ToString());
         }
 
+        [HttpPut]
+        [Route("/products/update")]
+        public async Task<IActionResult> UpdateItem([FromBody] Product product)
+        {
+            var productResource = $"/products/update/";
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = new Uri($"http://{this.hostName}");
+                var response = await httpClient.PutAsync(productResource, new StringContent(JsonConvert.SerializeObject(product), Encoding.UTF8, "application/json"));
+                ThrowOnTransientFailure(response);
+
+                var result = JsonConvert.DeserializeObject<Product>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+
+                if (result != null)
+                {
+                    return Ok(product);
+                }
+
+                return NotFound();
+            }
+        }
+        ///products/delete/{productId}
+        [HttpDelete]
+        [Route("/products/delete")]
+        public async Task<IActionResult> DeleteItem(int? productId)
+        {
+            var productResource = $"/products/delete/{productId}";
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.BaseAddress = new Uri($"http://{this.hostName}");
+                var response = await httpClient.DeleteAsync(productResource);
+                ThrowOnTransientFailure(response);
+
+                var product = JsonConvert.DeserializeObject<IEnumerable<Product>>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+
+                if (product != null)
+                {
+                    return Ok(product);
+                }
+
+                return NotFound();
+
+            }
+        }
+
     }
 }

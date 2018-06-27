@@ -131,7 +131,7 @@ namespace Mock.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("/products/delete")]
+        [Route("/products/delete/{productId}")]
         public async Task<IActionResult> DeleteItem(int? productId)
         {
             if (productId != null)
