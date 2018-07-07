@@ -1,4 +1,4 @@
-﻿namespace Mock.Api.Models
+﻿namespace Mock.Api.Models.ProductCatalogue
 {
     public class Product
     {
