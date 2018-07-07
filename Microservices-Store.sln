@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingCart.Api", "Shoppin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mock.Api", "Mock.Api\Mock.Api.csproj", "{0FAE940F-50FF-4951-B7E4-56985895AA42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockHTTPClient.Api", "MockHTTPClient.Api\MockHTTPClient.Api.csproj", "{F05818AF-1025-4DA3-ABB4-D2A4A9D22BC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MockHTTPClient.Api", "MockHTTPClient.Api\MockHTTPClient.Api.csproj", "{F05818AF-1025-4DA3-ABB4-D2A4A9D22BC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoyaltyProgram.Api", "LoyaltyProgram.Api\LoyaltyProgram.Api.csproj", "{3CA63766-BF57-4FDF-9D97-A2D2C0A5E66E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{F05818AF-1025-4DA3-ABB4-D2A4A9D22BC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F05818AF-1025-4DA3-ABB4-D2A4A9D22BC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F05818AF-1025-4DA3-ABB4-D2A4A9D22BC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CA63766-BF57-4FDF-9D97-A2D2C0A5E66E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CA63766-BF57-4FDF-9D97-A2D2C0A5E66E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CA63766-BF57-4FDF-9D97-A2D2C0A5E66E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CA63766-BF57-4FDF-9D97-A2D2C0A5E66E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 		{3DA70599-876E-4586-B84D-D5D5A59748BC} = {7815700F-556A-4FA1-BAB6-957069AE5F3D}
 		{0FAE940F-50FF-4951-B7E4-56985895AA42} = {7815700F-556A-4FA1-BAB6-957069AE5F3D}
 		{F05818AF-1025-4DA3-ABB4-D2A4A9D22BC1} = {7815700F-556A-4FA1-BAB6-957069AE5F3D}
+		{3CA63766-BF57-4FDF-9D97-A2D2C0A5E66E} = {7815700F-556A-4FA1-BAB6-957069AE5F3D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38F39F4F-21D8-4001-B61D-768350AB09D3}

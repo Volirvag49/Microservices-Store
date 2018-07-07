@@ -25,7 +25,7 @@ namespace Mock.Api.Controllers
         [HttpGet]
         [Route("/products")]
         [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAll()
+        public  IActionResult GetAll()
         {
             if (_products != null)
             {
@@ -37,7 +37,7 @@ namespace Mock.Api.Controllers
 
         [HttpGet]
         [Route("/products/{productId}")]
-        public async Task<IActionResult> GetById(int productId)
+        public  IActionResult GetById(int productId)
         {
             if (productId != 0)
             {
@@ -50,7 +50,7 @@ namespace Mock.Api.Controllers
         [HttpGet]
         [Route("/products2")]
         [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Search([FromQuery]int[] ProductIds)
+        public IActionResult Search([FromQuery]int[] ProductIds)
         {
             if (ProductIds.Count() == 0)
             {
@@ -73,7 +73,7 @@ namespace Mock.Api.Controllers
 
         [HttpPost]
         [Route("/products/search")]
-        public async Task<IActionResult> PostSearch([FromBody]int[] ProductIds)
+        public IActionResult PostSearch([FromBody]int[] ProductIds)
         {
             if (ProductIds.Count() == 0)
             {
@@ -96,7 +96,7 @@ namespace Mock.Api.Controllers
 
         [HttpPost]
         [Route("/products/add")]
-        public async Task<IActionResult> AddItem(Product product)
+        public IActionResult AddItem(Product product)
         {
             if (product != null)
             {
@@ -110,7 +110,7 @@ namespace Mock.Api.Controllers
 
         [HttpPut]
         [Route("/products/update")]
-        public async Task<IActionResult> UpdateItem([FromBody] Product product)
+        public IActionResult UpdateItem([FromBody] Product product)
         {
             if (product != null)
             {
@@ -132,7 +132,7 @@ namespace Mock.Api.Controllers
 
         [HttpDelete]
         [Route("/products/delete/{productId}")]
-        public async Task<IActionResult> DeleteItem(int? productId)
+        public IActionResult DeleteItem(int? productId)
         {
             if (productId != null)
             {

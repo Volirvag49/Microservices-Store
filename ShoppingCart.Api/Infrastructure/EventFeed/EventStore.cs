@@ -1,4 +1,4 @@
-﻿using ShoppingCart.Api.Infrastructure.EventFeed.Interfaces;
+﻿ using ShoppingCart.Api.Infrastructure.EventFeed.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
