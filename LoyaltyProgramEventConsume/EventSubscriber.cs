@@ -13,14 +13,14 @@ namespace LoyaltyProgramEventConsume
     public class EventSubscriber
     {
         private readonly string loyaltyProgramHost;
-        private long start = 0, chunkSize = 1;
+        private long start = 1, chunkSize = 1;
         private readonly Timer timer;
 
         public EventSubscriber(string loyaltyProgramHost)
         {
             WriteLine("created");
             this.loyaltyProgramHost = loyaltyProgramHost;
-            this.timer = new Timer(10 * 1000); // устанавливаем таймер на 10 секунд
+            this.timer = new Timer(5 * 1000); // устанавливаем таймер на 10 секунд
             this.timer.AutoReset = false;
             this.timer.Elapsed += (_, __) => SubscriptionCycleCallback().Wait(); // вызываем каждый раз, когда проходит заданное в таймере время
         }
@@ -38,8 +38,9 @@ namespace LoyaltyProgramEventConsume
             using (var httpClient = new HttpClient())
             {
                 httpClient.BaseAddress = new Uri($"http://{this.loyaltyProgramHost}");
-                var response = await httpClient.GetAsync($"/events/?start={this.start}&end={this.start + this.chunkSize}");
-                PrettyPrintResponse(response);
+                var response = await httpClient.GetAsync($"/events/?firstEventSequenceNumber={this.start}&lastEventSequenceNumber={this.start + this.chunkSize}");
+                WriteLine("Get Events: " + response?.RequestMessage.RequestUri);
+                await PrettyPrintResponse(response);
                 return response;
             }
         }
@@ -54,7 +55,7 @@ namespace LoyaltyProgramEventConsume
             {
                 WriteLine(ev.Content);
                 dynamic eventData = ev.Content;
-                WriteLine("product name from data: " + (string)eventData.item.productName);
+              //  WriteLine("product name from data: " + (string)eventData.item.productName); 
                 this.start = Math.Max(this.start, ev.SequenceNumber + 1);
             }
         }
