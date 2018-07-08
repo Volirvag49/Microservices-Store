@@ -15,6 +15,7 @@ namespace Mock.Api.Controllers
     [Route("api/v1/SpecialOffersa/EventsFeed")]
     public class SpecialOffersController : Controller
     {
+        private static bool Init = false;
         private static List<SpecialOffer> _products = new List<SpecialOffer>
         {
                 new SpecialOffer(){ProductId = 1 , ProductName = "Продукт 1", ProductDescription = "Описание 1", Price = 9, Update = "Скидка 10%"},
@@ -22,14 +23,19 @@ namespace Mock.Api.Controllers
                 new SpecialOffer(){ProductId = 3 , ProductName = "Продукт 3", ProductDescription = "Описание 3", Price = 29, Update = "Скидка 30%"},
                 new SpecialOffer(){ProductId = 4 , ProductName = "Продукт 4", ProductDescription = "Описание 4", Price = 39, Update = "Скидка 40%"},
                 new SpecialOffer(){ProductId = 5 , ProductName = "Продукт 5", ProductDescription = "Описание 5", Price = 49, Update = "Скидка 50%"}
+
         };
         private static EventStore _eventStore = new EventStore();
 
         public SpecialOffersController()
         {
-            foreach (var item in _products)
+            if (Init == false)
             {
-                _eventStore.Raise("Специальное предложение", item);
+                foreach (var item in _products)
+                {
+                    _eventStore.Raise("Специальное предложение", item);
+                }
+                Init = true;
             }
         }
 
@@ -44,7 +50,7 @@ namespace Mock.Api.Controllers
             }
 
             var events = _eventStore.GetEvents(firstEventSequenceNumber, lastEventSequenceNumber);
-            if (events != null)
+            if (events.Count() > 0)
             {
                 return Ok(events);
             }

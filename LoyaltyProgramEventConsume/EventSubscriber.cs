@@ -13,7 +13,7 @@ namespace LoyaltyProgramEventConsume
     public class EventSubscriber
     {
         private readonly string loyaltyProgramHost;
-        private long start = 1, chunkSize = 1;
+        private long start = 1, chunkSize = 0;
         private readonly Timer timer;
 
         public EventSubscriber(string loyaltyProgramHost)
@@ -55,7 +55,7 @@ namespace LoyaltyProgramEventConsume
             {
                 WriteLine(ev.Content);
                 dynamic eventData = ev.Content;
-              //  WriteLine("product name from data: " + (string)eventData.item.productName); 
+              //  WriteLine("product name from data: " + (string)eventData.item.productName); //error
                 this.start = Math.Max(this.start, ev.SequenceNumber + 1);
             }
         }

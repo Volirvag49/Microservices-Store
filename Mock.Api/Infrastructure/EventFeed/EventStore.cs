@@ -14,7 +14,7 @@ namespace Mock.Api.Infrastructure.EventFeed
         {
             var events = database
               .Where(e => e.SequenceNumber >= firstEventSequenceNumber && e.SequenceNumber <= lastEventSequenceNumber)
-              .OrderBy(e => e.SequenceNumber);
+              .OrderBy(e => e.SequenceNumber).ToList();
 
             return events;
         }
