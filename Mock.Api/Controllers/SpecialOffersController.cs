@@ -38,11 +38,6 @@ namespace Mock.Api.Controllers
         [ProducesResponseType(typeof(IEnumerable<Event>), (int)HttpStatusCode.OK)]
         public IActionResult GetEvents([FromQuery]long firstEventSequenceNumber, [FromQuery]long lastEventSequenceNumber)
         {
-            if (firstEventSequenceNumber <= 0 || lastEventSequenceNumber <= 0)
-            {
-                return BadRequest();
-            }
-
             var events = _eventStore.GetEvents(firstEventSequenceNumber, lastEventSequenceNumber);
             if (events != null)
             {
