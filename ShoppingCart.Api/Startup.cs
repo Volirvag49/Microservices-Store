@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Events;
 using ShoppingCart.Api.Client;
 using ShoppingCart.Api.Client.Interfaces;
 using ShoppingCart.Api.Infrastructure.EF.Context;
@@ -112,7 +114,16 @@ namespace ShoppingCart.Api
 
         }
 
-    }
+        private ILogger ConfigureLogger()
+        {
+            return new LoggerConfiguration()
+              .Enrich.FromLogContext()
+              .WriteTo.ColoredConsole(
+                 LogEventLevel.Verbose,
+                 "{NewLine}{Timestamp:HH:mm:ss} [{Level}] ({CorrelationToken}) {Message}{NewLine}{Exception}")
+              .CreateLogger();
+        }
 
-  
+    }
+ 
 }

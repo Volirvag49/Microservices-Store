@@ -9,8 +9,6 @@ namespace ShoppingCart.Api.Infrastructure.Middleware
 {
     public class MonitoringMiddleware
     {
-
-        //private RequestDelegate _next;
         private RequestDelegate _next;
         private Func<Task<bool>> healthCheck;
 
