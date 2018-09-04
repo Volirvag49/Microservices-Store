@@ -9,8 +9,13 @@ using ShoppingCart.Api.Client.Interfaces;
 using ShoppingCart.Api.Infrastructure.EF.Context;
 using ShoppingCart.Api.Infrastructure.EventFeed;
 using ShoppingCart.Api.Infrastructure.EventFeed.Interfaces;
+using ShoppingCart.Api.Infrastructure.Middleware;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ShoppingCart.Api
 {
@@ -21,17 +26,22 @@ namespace ShoppingCart.Api
             Configuration = configuration;
         }
 
+        private DbContextOptionsBuilder<CartContext> dbContextOptionsBuilder;
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
 
             services.AddDbContext<CartContext>(options =>
             {
-                options.UseSqlServer(Configuration["ConnectionString"],
+                dbContextOptionsBuilder = new DbContextOptionsBuilder<CartContext>();
+                dbContextOptionsBuilder.UseSqlServer(Configuration["ConnectionString"]);
+
+                    options.UseSqlServer(Configuration["ConnectionString"],
                 sqlServerOptionsAction: sqlOptions =>
                 {
                     sqlOptions.
@@ -75,13 +85,14 @@ namespace ShoppingCart.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            
+
+            app.UseHealthCheck(HealthCheck);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
 
             app.UseSwagger()
             .UseSwaggerUI(c =>
@@ -89,6 +100,19 @@ namespace ShoppingCart.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShoppingCart.Api V1");
             });
         }
+
+        public async Task<bool> HealthCheck()
+        {
+            using (var dbContext = new CartContext(dbContextOptionsBuilder.Options))
+            {
+                var count = await dbContext.ShoppingCartItems.CountAsync();
+
+                return count > 0;
+            }
+
+        }
+
     }
- 
+
+  
 }

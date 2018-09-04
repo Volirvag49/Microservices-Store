@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoyaltyProgram.Api", "Loyal
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LoyaltyProgram", "LoyaltyProgram", "{ADDBEFAE-4D59-4AD3-931B-CAA97A6DD2C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoyaltyProgramEventConsume", "LoyaltyProgramEventConsume\LoyaltyProgramEventConsume.csproj", "{6D340A50-78FB-492B-A7E7-B8C312E749A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoyaltyProgramEventConsume", "LoyaltyProgramEventConsume\LoyaltyProgramEventConsume.csproj", "{6D340A50-78FB-492B-A7E7-B8C312E749A9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Middleware", "Middleware", "{BFA1CCCC-E6E5-439C-A480-E2953EBAC439}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,6 +56,7 @@ Global
 		{3CA63766-BF57-4FDF-9D97-A2D2C0A5E66E} = {ADDBEFAE-4D59-4AD3-931B-CAA97A6DD2C7}
 		{ADDBEFAE-4D59-4AD3-931B-CAA97A6DD2C7} = {7815700F-556A-4FA1-BAB6-957069AE5F3D}
 		{6D340A50-78FB-492B-A7E7-B8C312E749A9} = {ADDBEFAE-4D59-4AD3-931B-CAA97A6DD2C7}
+		{BFA1CCCC-E6E5-439C-A480-E2953EBAC439} = {7815700F-556A-4FA1-BAB6-957069AE5F3D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38F39F4F-21D8-4001-B61D-768350AB09D3}
