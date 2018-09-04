@@ -92,7 +92,7 @@ namespace ShoppingCart.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseMvc();
 
             app.UseSwagger()
             .UseSwaggerUI(c =>
