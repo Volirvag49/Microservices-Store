@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Serilog.Context;
 using Serilog.Events;
 using ShoppingCart.Api.Client;
 using ShoppingCart.Api.Client.Interfaces;
@@ -14,6 +15,7 @@ using ShoppingCart.Api.Infrastructure.EventFeed.Interfaces;
 using ShoppingCart.Api.Infrastructure.Middleware;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -28,8 +30,7 @@ namespace ShoppingCart.Api
             Configuration = configuration;
         }
 
-        private DbContextOptionsBuilder<CartContext> dbContextOptionsBuilder;
-
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -37,13 +38,9 @@ namespace ShoppingCart.Api
         {
             services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-
             services.AddDbContext<CartContext>(options =>
             {
-                dbContextOptionsBuilder = new DbContextOptionsBuilder<CartContext>();
-                dbContextOptionsBuilder.UseSqlServer(Configuration["ConnectionString"]);
-
-                    options.UseSqlServer(Configuration["ConnectionString"],
+                options.UseSqlServer(Configuration["ConnectionString"],
                 sqlServerOptionsAction: sqlOptions =>
                 {
                     sqlOptions.
@@ -87,12 +84,18 @@ namespace ShoppingCart.Api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-         
+            var log = ConfigureLogger();
+
+            app.UseGlobalErrorLogging(log);
+            app.UseCorrelationToken();
+            app.UseRequestLogging(log);
+            app.UsePerformanceLogging(log);
+            app.UseMonitoring(HealthCheck);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseHealthCheck(HealthCheck);
 
             app.UseMvc();
 
@@ -103,19 +106,40 @@ namespace ShoppingCart.Api
             });
         }
 
+
         public async Task<bool> HealthCheck()
         {
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<CartContext>();
+
+            dbContextOptionsBuilder.UseSqlServer(Configuration["ConnectionString"],
+               sqlServerOptionsAction: sqlOptions =>
+               {
+                   sqlOptions.
+               MigrationsAssembly(
+                   typeof(Startup).
+                    GetTypeInfo().
+                     Assembly.
+                      GetName().Name);
+
+                    //Configuring Connection Resiliency:
+                    sqlOptions.
+                       EnableRetryOnFailure(maxRetryCount: 5,
+                       maxRetryDelay: TimeSpan.FromSeconds(30),
+                       errorNumbersToAdd: null);
+
+               });
+
             using (var dbContext = new CartContext(dbContextOptionsBuilder.Options))
             {
                 var count = await dbContext.ShoppingCartItems.CountAsync();
 
                 return count > 0;
             }
-
         }
 
         private ILogger ConfigureLogger()
         {
+
             return new LoggerConfiguration()
               .Enrich.FromLogContext()
               .WriteTo.ColoredConsole(

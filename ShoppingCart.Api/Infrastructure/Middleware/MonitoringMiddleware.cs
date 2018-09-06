@@ -57,13 +57,10 @@ namespace ShoppingCart.Api.Infrastructure.Middleware
 
     public static class MonitoringMiddlewareExtension
     {
-        public static IApplicationBuilder UseHealthCheck(
-          this IApplicationBuilder app,
-          Func<Task<bool>> healthCheck)
+        public static IApplicationBuilder UseMonitoring(
+          this IApplicationBuilder app, Func<Task<bool>> healthCheck)
         {
-            app.UseMiddleware<MonitoringMiddleware>(healthCheck);
-
-            return app;
+           return app.UseMiddleware<MonitoringMiddleware>(healthCheck);           
         }
     }
 }
