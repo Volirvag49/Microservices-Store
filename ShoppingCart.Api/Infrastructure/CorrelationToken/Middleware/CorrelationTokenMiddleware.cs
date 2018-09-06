@@ -5,7 +5,7 @@ using Serilog.Context;
 using System;
 using System.Threading.Tasks;
 
-namespace ShoppingCart.Api.Infrastructure.EventFeed
+namespace ShoppingCart.Api.Infrastructure.CorrelationToken.Middleware
 {
     public class CorrelationTokenMiddleware
     {

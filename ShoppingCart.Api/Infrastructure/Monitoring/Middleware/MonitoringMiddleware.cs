@@ -5,7 +5,7 @@ using AppFunc = System.Func<System.Collections.Generic.IDictionary<string, objec
 using Microsoft.AspNetCore.Owin;
 using Microsoft.AspNetCore.Builder;
 
-namespace ShoppingCart.Api.Infrastructure.Middleware
+namespace ShoppingCart.Api.Infrastructure.Monitoring.Middleware
 {
     public class MonitoringMiddleware
     {

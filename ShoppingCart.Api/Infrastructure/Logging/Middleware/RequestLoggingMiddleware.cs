@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Serilog;
 using System.Threading.Tasks;
 
-namespace ShoppingCart.Api.Infrastructure.Middleware
+namespace ShoppingCart.Api.Infrastructure.Logging.Middleware
 {
     public class RequestLoggingMiddleware
     {

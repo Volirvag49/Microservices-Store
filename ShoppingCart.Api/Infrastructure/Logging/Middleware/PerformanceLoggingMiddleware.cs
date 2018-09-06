@@ -4,7 +4,7 @@ using Serilog;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace ShoppingCart.Api.Infrastructure.Middleware
+namespace ShoppingCart.Api.Infrastructure.Logging.Middleware
 {
     public class PerformanceLoggingMiddleware
     {

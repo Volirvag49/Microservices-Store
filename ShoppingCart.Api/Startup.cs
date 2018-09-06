@@ -5,20 +5,17 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using Serilog.Context;
 using Serilog.Events;
 using ShoppingCart.Api.Client;
 using ShoppingCart.Api.Client.Interfaces;
+using ShoppingCart.Api.Infrastructure.CorrelationToken.Middleware;
 using ShoppingCart.Api.Infrastructure.EF.Context;
 using ShoppingCart.Api.Infrastructure.EventFeed;
 using ShoppingCart.Api.Infrastructure.EventFeed.Interfaces;
-using ShoppingCart.Api.Infrastructure.Middleware;
+using ShoppingCart.Api.Infrastructure.Logging.Middleware;
+using ShoppingCart.Api.Infrastructure.Monitoring.Middleware;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ShoppingCart.Api
