@@ -8,6 +8,7 @@ using Serilog;
 using Serilog.Events;
 using ShoppingCart.Api.Client;
 using ShoppingCart.Api.Client.Interfaces;
+using ShoppingCart.Api.Infrastructure.CorrelationToken;
 using ShoppingCart.Api.Infrastructure.CorrelationToken.Middleware;
 using ShoppingCart.Api.Infrastructure.EF.Context;
 using ShoppingCart.Api.Infrastructure.EventFeed;
@@ -74,6 +75,7 @@ namespace ShoppingCart.Api
                 });
             });
 
+            services.AddTransient<IHttpClientFactory, HttpClientFactory>();
             services.AddTransient<IProductCatalogueClient, ProductCatalogueClient>();
             services.AddTransient<IEventStore, EventStore>();
         }
