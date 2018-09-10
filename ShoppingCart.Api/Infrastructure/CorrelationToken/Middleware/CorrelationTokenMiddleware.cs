@@ -31,11 +31,7 @@ namespace ShoppingCart.Api.Infrastructure.CorrelationToken.Middleware
                 
             context.Request.Headers.Add("correlationToken", correlationToken.ToString());
 
-            var service = _serviceProvider.GetService<HttpClientFactory>();
-            if (service != null)
-            {
-                service.CorrelationToken = correlationToken.ToString();
-            }
+            HttpClientFactory.CorrelationToken = correlationToken.ToString();
 
 
             using (LogContext.PushProperty("CorrelationToken", correlationToken))

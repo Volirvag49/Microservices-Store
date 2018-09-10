@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Polly;
 using ShoppingCart.Api.Client.Interfaces;
+using ShoppingCart.Api.Infrastructure.CorrelationToken;
 using ShoppingCart.Api.Models;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,12 @@ namespace ShoppingCart.Api.Client
         private static string productCatalogueBaseUrl =
           @"http://localhost:50000/";
 
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public ProductCatalogueClient (IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
 
         public Task<IEnumerable<ShoppingCartItem>> GetShoppingCartItems(int[] productCatalogueIds) =>
           exponentialRetryPolicy
@@ -34,14 +41,15 @@ namespace ShoppingCart.Api.Client
             return await ConvertToShoppingCartItems(response).ConfigureAwait(false);
         }
 
-        private static async Task<HttpResponseMessage> RequestProductFromProductCatalogue(int[] productCatalogueIds)
+        private async Task<HttpResponseMessage> RequestProductFromProductCatalogue(int[] productCatalogueIds)
         {
             var productsResource = "/products/search/";
 
-            using (var httpClient = new HttpClient())
+            var client = _httpClientFactory.Create(new Uri(productCatalogueBaseUrl));
+
+            using (client)
             {
-                httpClient.BaseAddress = new Uri(productCatalogueBaseUrl);
-                return await httpClient.PostAsync(productsResource, new StringContent(JsonConvert.SerializeObject(productCatalogueIds), Encoding.UTF8, "application/json"));
+                return await client.PostAsync(productsResource, new StringContent(JsonConvert.SerializeObject(productCatalogueIds), Encoding.UTF8, "application/json"));
             }
         }
 

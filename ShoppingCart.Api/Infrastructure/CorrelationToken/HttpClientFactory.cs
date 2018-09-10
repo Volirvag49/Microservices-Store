@@ -7,26 +7,12 @@ namespace ShoppingCart.Api.Infrastructure.CorrelationToken
 {
     public class HttpClientFactory : IHttpClientFactory
     {
-        private string correlationToken;
+        public static string CorrelationToken {get; set; }
 
-        public string CorrelationToken
-        {
-            get
-            {
-                return correlationToken;
-            }
-
-            internal set
-            {
-                correlationToken = value;
-            }
-
-        }        
-
-        public async Task<HttpClient> Create(Uri uri)
+        public HttpClient Create(Uri uri)
         {
             var client = new HttpClient() { BaseAddress = uri };
-            client.DefaultRequestHeaders.Add("Correlation-Token", this.correlationToken);
+            client.DefaultRequestHeaders.Add("Correlation-Token", CorrelationToken);
 
             return client;
         }

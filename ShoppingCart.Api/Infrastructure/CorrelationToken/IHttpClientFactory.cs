@@ -6,6 +6,6 @@ namespace ShoppingCart.Api.Infrastructure.CorrelationToken
 {
     public interface IHttpClientFactory
     {
-        Task<HttpClient> Create(Uri uri);
+        HttpClient Create(Uri uri);
     }
 }
